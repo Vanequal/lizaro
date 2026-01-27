@@ -958,6 +958,7 @@ section::after {
     border-bottom: 1px solid rgba(201, 169, 97, .1);
     color: var(--text-secondary);
     position: relative;
+    text-align: left;
     word-wrap: break-word;
     overflow-wrap: break-word;
     vertical-align: top
