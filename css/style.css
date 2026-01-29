@@ -94,7 +94,7 @@ a {
     justify-content: center;
     gap: 8px;
     padding: 16px 38px;
-    border-radius: 8px;
+    border-radius: 0;
     font-weight: 700;
     font-size: 15px;
     border: none;
@@ -105,7 +105,8 @@ a {
     white-space: nowrap;
     font-family: 'Teko', sans-serif;
     position: relative;
-    overflow: hidden
+    overflow: hidden;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)
 }
 
 .btn-primary {
@@ -136,30 +137,95 @@ a {
 
 .btn-primary:hover {
     transform: translateY(-3px) scale(1.02);
-    box-shadow: var(--shadow-glow-strong)
+    box-shadow: var(--shadow-glow-strong), inset 0 0 20px rgba(255, 255, 255, .2)
+}
+
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, .3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width .6s ease, height .6s ease
+}
+
+.btn-primary:active::after {
+    width: 300px;
+    height: 300px
 }
 
 .btn-secondary {
     background: transparent;
     color: var(--text-primary);
-    border: 2px solid var(--border);
-    transition: all .3s ease
+    border: none;
+    transition: all .3s ease;
+    position: relative
+}
+
+.btn-secondary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--border), var(--primary), var(--border));
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    z-index: -2;
+    opacity: .5
+}
+
+.btn-secondary::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: var(--bg-primary);
+    clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+    z-index: -1
 }
 
 .btn-secondary:hover {
-    border-color: var(--primary);
-    background: rgba(255, 69, 0, .1)
+    color: var(--primary)
+}
+
+.btn-secondary:hover::before {
+    opacity: 1;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light), var(--primary))
 }
 
 .btn-outline {
     background: transparent;
     color: var(--primary);
-    border: 2px solid var(--primary)
+    border: none;
+    position: relative
+}
+
+.btn-outline::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-primary);
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    z-index: -2
+}
+
+.btn-outline::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: var(--bg-primary);
+    clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+    z-index: -1;
+    transition: background .3s ease
 }
 
 .btn-outline:hover {
-    background: var(--primary);
     color: #fff
+}
+
+.btn-outline:hover::after {
+    background: transparent
 }
 
 .btn-large {
@@ -439,6 +505,65 @@ section {
     position: relative
 }
 
+/* Diagonal Section Dividers */
+.key-facts::before,
+.bonuses::before,
+.games::before,
+.live-casino-section::before,
+.gamification::before,
+.reviews::before,
+.advantages::before,
+.responsible-gambling::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to right bottom, transparent 49.5%, var(--bg-secondary) 49.5%, var(--bg-secondary) 50.5%, transparent 50.5%),
+                linear-gradient(to left bottom, transparent 49.5%, var(--bg-secondary) 49.5%, var(--bg-secondary) 50.5%, transparent 50.5%);
+    z-index: 1
+}
+
+.key-facts::before {
+    background: linear-gradient(to right, var(--primary) 0%, transparent 20%, transparent 80%, var(--primary) 100%);
+    height: 3px
+}
+
+.bonuses::after,
+.games::after,
+.gamification::after,
+.responsible-gambling::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 60px;
+    background: var(--bg-secondary);
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+    z-index: 2
+}
+
+.params-table::before,
+.registration::before,
+.games-showcase::before,
+.sports-betting::before,
+.payments::before,
+.service-safety::before,
+.customer-support::before,
+.mobile-experience::before,
+.faq::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, var(--primary) 25%, var(--primary) 75%, transparent 100%)
+}
+
 .section-label {
     display: inline-flex;
     align-items: center;
@@ -499,18 +624,39 @@ section {
 .fact-card {
     background: var(--bg-card);
     padding: 48px 36px;
-    border-radius: 16px;
     text-align: center;
-    border: 1px solid var(--border);
     transition: all .4s ease;
     position: relative;
-    overflow: visible
+    overflow: visible;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    border: none
+}
+
+.fact-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--border) 50%, var(--primary) 100%);
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    z-index: -2
+}
+
+.fact-card::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-card);
+    clip-path: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19px 100%, 0 calc(100% - 19px));
+    z-index: -1
 }
 
 .fact-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 40px rgba(255, 69, 0, .3);
-    border-color: var(--primary)
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(255, 69, 0, .3), 0 0 30px rgba(255, 69, 0, .2)
+}
+
+.fact-card:hover::before {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--primary) 100%)
 }
 
 .fact-card__icon {
@@ -550,22 +696,46 @@ section {
 .table-wrapper {
     overflow-x: auto;
     margin-top: 48px;
-    border-radius: 12px;
+    border-radius: 0;
     box-shadow: var(--shadow-md);
-    border: 1px solid var(--border)
+    border: none;
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))
+}
+
+.table-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--border) 30%, var(--border) 70%, var(--primary) 100%);
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    z-index: -1
 }
 
 .info-table {
     width: 100%;
     border-collapse: collapse;
     background: var(--bg-card);
-    border-radius: 12px;
+    border-radius: 0;
     overflow: hidden
 }
 
 .info-table thead {
-    background: linear-gradient(135deg, rgba(255, 69, 0, .2) 0%, rgba(255, 107, 53, .1) 100%);
-    border-bottom: 2px solid var(--primary)
+    background: linear-gradient(135deg, rgba(255, 69, 0, .25) 0%, rgba(255, 107, 53, .15) 50%, rgba(255, 69, 0, .25) 100%);
+    border-bottom: 3px solid;
+    border-image: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary)) 1;
+    position: relative
+}
+
+.info-table thead::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    filter: blur(2px)
 }
 
 .info-table th {
@@ -618,16 +788,50 @@ section {
     align-items: center;
     background: var(--bg-card);
     padding: 68px;
-    border-radius: 24px;
+    border-radius: 0;
     margin-bottom: 68px;
-    border: 1px solid var(--border);
+    border: none;
     position: relative;
-    overflow: visible
+    overflow: visible;
+    clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px))
+}
+
+.bonus-highlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--border) 20%, var(--border) 80%, var(--primary) 100%);
+    clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px));
+    z-index: -2
+}
+
+.bonus-highlight::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: var(--bg-card);
+    clip-path: polygon(0 0, calc(100% - 39px) 0, 100% 39px, 100% 100%, 39px 100%, 0 calc(100% - 39px));
+    z-index: -1
+}
+
+.bonus-highlight:hover::before {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 20%, var(--primary-light) 80%, var(--primary) 100%)
 }
 
 .bonus-highlight:hover {
-    border-color: var(--primary);
-    box-shadow: 0 12px 40px rgba(255, 69, 0, .2)
+    box-shadow: 0 20px 60px rgba(255, 69, 0, .3)
+}
+
+/* Decorative corner element */
+.bonus-highlight .bonus-badge::after {
+    content: '';
+    position: absolute;
+    top: -68px;
+    right: -68px;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, transparent 50%, var(--primary) 50%);
+    opacity: .3
 }
 
 .bonus-badge {
@@ -720,15 +924,38 @@ section {
 .condition-card {
     background: var(--bg-card);
     padding: 40px;
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    transition: all .4s ease
+    border-radius: 0;
+    border: none;
+    transition: all .4s ease;
+    position: relative;
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px)
+}
+
+.condition-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, var(--primary), var(--border), var(--primary));
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+    z-index: -2
+}
+
+.condition-card::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-card);
+    clip-path: polygon(19px 0, 100% 0, 100% calc(100% - 19px), calc(100% - 19px) 100%, 0 100%, 0 19px);
+    z-index: -1
 }
 
 .condition-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(255, 69, 0, .25);
-    border-color: var(--primary)
+    transform: translateY(-8px) rotateX(5deg);
+    box-shadow: 0 20px 40px rgba(255, 69, 0, .25)
+}
+
+.condition-card:hover::before {
+    background: linear-gradient(45deg, var(--primary), var(--primary-light), var(--primary))
 }
 
 .condition-icon {
@@ -754,25 +981,33 @@ section {
 
 .dragonia-tip {
     background: linear-gradient(135deg, rgba(255, 69, 0, .15) 0%, rgba(255, 107, 53, .08) 100%);
-    border: 1px solid rgba(255, 69, 0, .3);
-    border-radius: 16px;
+    border: none;
+    border-radius: 0;
     padding: 32px;
     margin-top: 48px;
     display: flex;
     gap: 24px;
     align-items: start;
-    position: relative
+    position: relative;
+    clip-path: polygon(16px 0, 100% 0, 100% 100%, 0 100%, 0 16px)
 }
 
 .dragonia-tip::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: var(--gradient-primary);
-    border-radius: 16px 0 0 16px
+    inset: 0;
+    background: linear-gradient(135deg, var(--primary) 0%, rgba(255, 69, 0, .3) 100%);
+    clip-path: polygon(16px 0, 100% 0, 100% 100%, 0 100%, 0 16px);
+    z-index: -2
+}
+
+.dragonia-tip::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: linear-gradient(135deg, rgba(255, 69, 0, .15) 0%, rgba(255, 107, 53, .08) 100%);
+    clip-path: polygon(15px 0, 100% 0, 100% 100%, 0 100%, 0 15px);
+    z-index: -1
 }
 
 .tip-icon {
@@ -807,19 +1042,41 @@ section {
 
 .step-card {
     padding: 56px 44px;
-    border-radius: 16px;
+    border-radius: 0;
     text-align: center;
     position: relative;
-    border: 1px solid var(--border);
+    border: none;
     transition: all .4s ease;
     background: var(--bg-card);
-    margin-top: 26px
+    margin-top: 26px;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%)
+}
+
+.step-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--primary) 0%, var(--border) 30%, var(--border) 100%);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%);
+    z-index: -2
+}
+
+.step-card::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-card);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 23px), calc(100% - 23px) 100%, 0 100%);
+    z-index: -1
 }
 
 .step-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--primary);
-    box-shadow: 0 12px 40px rgba(255, 69, 0, .25)
+    transform: translateY(-10px) perspective(500px) rotateY(-3deg);
+    box-shadow: 0 20px 50px rgba(255, 69, 0, .3)
+}
+
+.step-card:hover::before {
+    background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 30%, var(--primary) 100%)
 }
 
 .step-number {
@@ -885,15 +1142,40 @@ section {
 .game-category {
     background: var(--bg-card);
     padding: 44px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    transition: all .4s ease
+    border-radius: 0;
+    border: none;
+    transition: all .4s ease;
+    position: relative;
+    clip-path: polygon(0 16px, 16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)
+}
+
+.game-category::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--primary) 0%, transparent 30%, transparent 70%, var(--primary) 100%);
+    clip-path: polygon(0 16px, 16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+    z-index: -2;
+    opacity: .5
+}
+
+.game-category::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-card);
+    clip-path: polygon(0 15px, 15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+    z-index: -1
 }
 
 .game-category:hover {
     transform: translateY(-10px);
-    box-shadow: 0 12px 40px rgba(255, 69, 0, .25);
-    border-color: var(--primary)
+    box-shadow: 0 20px 50px rgba(255, 69, 0, .3)
+}
+
+.game-category:hover::before {
+    opacity: 1;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 30%, var(--primary-light) 70%, var(--primary) 100%)
 }
 
 .game-category__icon {
@@ -979,19 +1261,46 @@ section {
 .provider-card {
     background: var(--bg-card);
     padding: 28px;
-    border-radius: 12px;
+    border-radius: 0;
     text-align: center;
-    border: 1px solid var(--border);
+    border: none;
     transition: all .3s ease;
     display: flex;
     flex-direction: column;
-    align-items: center
+    align-items: center;
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%)
+}
+
+.provider-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--border);
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+    z-index: -2
+}
+
+.provider-card::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-card);
+    clip-path: polygon(0 0, calc(100% - 11px) 0, 100% 11px, 100% 100%, 0 100%);
+    z-index: -1;
+    transition: background .3s ease
 }
 
 .provider-card:hover {
-    transform: translateY(-6px);
-    background: var(--bg-card-hover);
-    border-color: var(--primary)
+    transform: translateY(-6px)
+}
+
+.provider-card:hover::before {
+    background: var(--primary)
+}
+
+.provider-card:hover::after {
+    background: var(--bg-card-hover)
 }
 
 .provider-logo {
@@ -1040,16 +1349,35 @@ section {
 
 .game-card {
     background: var(--bg-card);
-    border-radius: 16px;
+    border-radius: 0;
     overflow: hidden;
-    border: 1px solid var(--border);
-    transition: all .4s ease
+    border: none;
+    transition: all .4s ease;
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)
+}
+
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 24px 24px 0;
+    border-color: transparent var(--primary) transparent transparent;
+    z-index: 10;
+    transition: all .3s ease
 }
 
 .game-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 40px rgba(255, 69, 0, .3);
-    border-color: var(--primary)
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(255, 69, 0, .4)
+}
+
+.game-card:hover::before {
+    border-width: 0 32px 32px 0
 }
 
 .game-card__image {
@@ -1155,16 +1483,35 @@ section {
 
 .live-game-card {
     background: var(--bg-card);
-    border-radius: 16px;
+    border-radius: 0;
     overflow: hidden;
-    border: 1px solid var(--border);
-    transition: all .4s ease
+    border: none;
+    transition: all .4s ease;
+    position: relative;
+    clip-path: polygon(16px 0, 100% 0, 100% 100%, 0 100%, 0 16px)
+}
+
+.live-game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 24px 24px 0 0;
+    border-color: var(--accent) transparent transparent transparent;
+    z-index: 10;
+    transition: all .3s ease
 }
 
 .live-game-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 40px rgba(255, 69, 0, .3);
-    border-color: var(--primary)
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(255, 69, 0, .4), 0 0 30px rgba(220, 38, 38, .3)
+}
+
+.live-game-card:hover::before {
+    border-width: 32px 32px 0 0
 }
 
 .live-game-card__image {
@@ -1254,14 +1601,38 @@ section {
     align-items: center;
     background: var(--bg-card);
     padding: 68px;
-    border-radius: 24px;
-    border: 1px solid var(--border);
-    transition: all .4s ease
+    border-radius: 0;
+    border: none;
+    transition: all .4s ease;
+    position: relative;
+    clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px)
+}
+
+.gamif-card-large::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, var(--primary), var(--border), var(--primary));
+    clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
+    z-index: -2;
+    opacity: .6
+}
+
+.gamif-card-large::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: var(--bg-card);
+    clip-path: polygon(29px 0, 100% 0, 100% calc(100% - 29px), calc(100% - 29px) 100%, 0 100%, 0 29px);
+    z-index: -1
 }
 
 .gamif-card-large:hover {
-    box-shadow: 0 12px 40px rgba(255, 69, 0, .25);
-    border-color: var(--primary)
+    box-shadow: 0 20px 60px rgba(255, 69, 0, .3), 0 0 40px rgba(255, 69, 0, .1)
+}
+
+.gamif-card-large:hover::before {
+    opacity: 1
 }
 
 .gamif-card-large.reverse {
@@ -1353,18 +1724,41 @@ section {
 
 .process-step {
     padding: 40px;
-    border-radius: 16px;
-    border: 1px solid var(--border);
+    border-radius: 0;
+    border: none;
     transition: all .4s ease;
     background: var(--bg-card);
     margin-top: 22px;
-    position: relative
+    position: relative;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)
+}
+
+.process-step::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--primary) 0%, var(--border) 50%, var(--border) 100%);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+    z-index: -2;
+    opacity: .5
+}
+
+.process-step::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-card);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+    z-index: -1
 }
 
 .process-step:hover {
     transform: translateY(-8px);
-    border-color: var(--primary);
-    box-shadow: 0 12px 40px rgba(255, 69, 0, .25)
+    box-shadow: 0 20px 50px rgba(255, 69, 0, .3)
+}
+
+.process-step:hover::before {
+    opacity: 1
 }
 
 .process-number {
@@ -1414,16 +1808,38 @@ section {
 .review-card {
     background: var(--bg-card);
     padding: 36px;
-    border-radius: 16px;
-    border: 1px solid var(--border);
+    border-radius: 0;
+    border: none;
     transition: all .4s ease;
-    position: relative
+    position: relative;
+    clip-path: polygon(0 20px, 20px 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)
+}
+
+.review-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--border) 50%, var(--primary) 100%);
+    clip-path: polygon(0 20px, 20px 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+    z-index: -2
+}
+
+.review-card::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-card);
+    clip-path: polygon(0 19px, 19px 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 0 100%);
+    z-index: -1
 }
 
 .review-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 40px rgba(255, 69, 0, .25);
-    border-color: var(--primary)
+    transform: translateY(-10px) perspective(800px) rotateX(3deg);
+    box-shadow: 0 25px 50px rgba(255, 69, 0, .3)
+}
+
+.review-card:hover::before {
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 50%, var(--primary) 100%)
 }
 
 .review-header {
@@ -1566,16 +1982,40 @@ section {
 .advantage-card {
     background: var(--bg-card);
     padding: 44px;
-    border-radius: 16px;
-    border: 1px solid var(--border);
+    border-radius: 0;
+    border: none;
     transition: all .4s ease;
-    text-align: center
+    text-align: center;
+    position: relative;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px))
+}
+
+.advantage-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--border) 0%, var(--primary) 100%);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px));
+    z-index: -2;
+    opacity: .6
+}
+
+.advantage-card::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-card);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 19px), 50% calc(100% - 1px), 0 calc(100% - 19px));
+    z-index: -1
 }
 
 .advantage-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 40px rgba(255, 69, 0, .25);
-    border-color: var(--primary)
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 50px rgba(255, 69, 0, .3)
+}
+
+.advantage-card:hover::before {
+    opacity: 1
 }
 
 .advantage-icon {
@@ -1626,16 +2066,40 @@ section {
 .responsible-feature {
     background: var(--bg-card);
     padding: 44px;
-    border-radius: 16px;
-    border: 1px solid var(--border);
+    border-radius: 0;
+    border: none;
     text-align: center;
-    transition: all .4s ease
+    transition: all .4s ease;
+    position: relative;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), 50% 100%, 0 calc(100% - 24px))
+}
+
+.responsible-feature::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--primary) 0%, var(--border) 100%);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), 50% 100%, 0 calc(100% - 24px));
+    z-index: -2;
+    opacity: .5
+}
+
+.responsible-feature::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-card);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 23px), 50% calc(100% - 1px), 0 calc(100% - 23px));
+    z-index: -1
 }
 
 .responsible-feature:hover {
     transform: translateY(-10px);
-    box-shadow: 0 12px 40px rgba(255, 69, 0, .25);
-    border-color: var(--primary)
+    box-shadow: 0 20px 50px rgba(255, 69, 0, .3)
+}
+
+.responsible-feature:hover::before {
+    opacity: 1
 }
 
 .responsible-feature__icon {
@@ -1668,17 +2132,41 @@ section {
 
 .faq-item {
     background: var(--bg-card);
-    border-radius: 12px;
+    border-radius: 0;
     margin-bottom: 18px;
     overflow: hidden;
-    border: 1px solid var(--border);
-    transition: all .3s ease
+    border: none;
+    transition: all .3s ease;
+    position: relative;
+    clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%, 0 12px)
+}
+
+.faq-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--border);
+    clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%, 0 12px);
+    z-index: -2
+}
+
+.faq-item::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-card);
+    clip-path: polygon(11px 0, 100% 0, 100% 100%, 0 100%, 0 11px);
+    z-index: -1
 }
 
 .faq-item.active,
 .faq-item:hover {
-    border-color: var(--primary);
-    box-shadow: 0 4px 20px rgba(255, 69, 0, .15)
+    box-shadow: 0 4px 30px rgba(255, 69, 0, .2)
+}
+
+.faq-item.active::before,
+.faq-item:hover::before {
+    background: linear-gradient(135deg, var(--primary), var(--border), var(--primary))
 }
 
 .faq-question {
