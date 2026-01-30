@@ -2947,4 +2947,40 @@ section {
     .hero__bg::after {
         display: none; /* Радиальные градиенты жрут ресурсы */
     }
+
+    /* Отключаем тяжёлые фоновые градиенты на мобильных */
+    body::before,
+    body::after {
+        display: none !important;
+    }
+
+    /* Упрощаем тени для мобильных */
+    .btn, .card, .fact-card, .game-card, .advantage-card {
+        box-shadow: 0 2px 8px rgba(0,0,0,.4) !important;
+    }
+
+    /* Отключаем backdrop-filter везде на мобильных - очень дорого для GPU */
+    .header,
+    .header.scrolled,
+    .hero__badge,
+    .modal-overlay,
+    [class*="blur"] {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    /* Упрощаем hero для быстрой загрузки */
+    .hero__bg-img {
+        filter: none !important;
+    }
+
+    /* Уменьшаем качество рендеринга для скорости */
+    img {
+        image-rendering: auto;
+    }
+
+    /* Отключаем will-change чтобы не расходовать память */
+    * {
+        will-change: auto !important;
+    }
 }
