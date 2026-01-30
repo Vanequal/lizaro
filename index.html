@@ -10,12 +10,27 @@
     <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/style.css">
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600;700&family=Exo+2:wght@400;500;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
+    <!-- Critical CSS inline for faster FCP -->
+    <style>
+        :root{--primary:#ff4500;--bg-primary:#0f0f0f;--text-primary:#fff}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{overflow-x:hidden}
+        body{font-family:'Exo 2',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6}
+        .header{background:rgba(15,15,15,.95);padding:22px 0;position:fixed;top:0;left:0;right:0;z-index:1000}
+        .container{max-width:1320px;margin:0 auto;padding:0 24px}
+        .hero{position:relative;padding:160px 0 120px}
+        .btn{display:inline-flex;align-items:center;padding:16px 38px;font-weight:700;cursor:pointer}
+        .btn-primary{background:linear-gradient(135deg,#ff4500 0%,#ff8c42 100%);color:#fff}
+    </style>
+
+    <!-- Styles - preload for faster loading -->
+    <link rel="preload" href="css/style.min.css" as="style">
+    <link rel="stylesheet" href="css/style.min.css">
+
+    <!-- Fonts - async loading with font-display: swap -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Exo+2:wght@400;600;700&family=Orbitron:wght@700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Exo+2:wght@400;600;700&family=Orbitron:wght@700&display=swap"></noscript>
 </head>
 
 <body>
@@ -55,7 +70,7 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero__bg">
-            <img src="images/hero-bg.webp" alt="Dragonia Casino Background" class="hero__bg-img" width="1920" height="1080" loading="eager">
+            <img src="images/hero-bg.webp" alt="Dragonia Casino Background" class="hero__bg-img" width="1920" height="1080" loading="eager" decoding="async" fetchpriority="high">
         </div>
         <div class="container">
             <div class="hero__content">
@@ -75,7 +90,7 @@
                 <!-- Hero Features Grid -->
                 <div class="hero__features-grid">
                     <div class="hero__feature-card">
-                        <img src="images/hero-feature-1.webp" alt="Über 4000 Spiele" width="300" height="200" loading="eager">
+                        <img src="images/hero-feature-1.webp" alt="Über 4000 Spiele" width="300" height="200" loading="lazy" decoding="async">
                         <div class="hero__feature-overlay">
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
                                 <path d="M24 8L28 20H40L30 28L34 40L24 32L14 40L18 28L8 20H20L24 8Z" fill="currentColor" />
@@ -85,7 +100,7 @@
                         </div>
                     </div>
                     <div class="hero__feature-card">
-                        <img src="images/hero-feature-2.webp" alt="Live Casino" width="300" height="200" loading="eager">
+                        <img src="images/hero-feature-2.webp" alt="Live Casino" width="300" height="200" loading="lazy" decoding="async">
                         <div class="hero__feature-overlay">
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
                                 <circle cx="24" cy="24" r="20" fill="currentColor" />
@@ -96,7 +111,7 @@
                         </div>
                     </div>
                     <div class="hero__feature-card">
-                        <img src="images/hero-feature-3.webp" alt="Krypto-Zahlungen" width="300" height="200" loading="eager">
+                        <img src="images/hero-feature-3.webp" alt="Krypto-Zahlungen" width="300" height="200" loading="lazy" decoding="async">
                         <div class="hero__feature-overlay">
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
                                 <path d="M24 8C15.163 8 8 15.163 8 24C8 32.837 15.163 40 24 40C32.837 40 40 32.837 40 24C40 15.163 32.837 8 24 8Z" stroke="currentColor" stroke-width="2" />
@@ -107,7 +122,7 @@
                         </div>
                     </div>
                     <div class="hero__feature-card">
-                        <img src="images/hero-feature-4.webp" alt="Sportwetten" width="300" height="200" loading="eager">
+                        <img src="images/hero-feature-4.webp" alt="Sportwetten" width="300" height="200" loading="lazy" decoding="async">
                         <div class="hero__feature-overlay">
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
                                 <circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="2" />
@@ -1509,7 +1524,7 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="js/script.js" defer></script>
+    <!-- Scripts - minified for performance -->
+    <script src="js/script.min.js" defer></script>
 </body>
 </html>

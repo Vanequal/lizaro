@@ -30,21 +30,28 @@ if (burger && nav) {
     });
 }
 
-// Header Scroll Effect
+// Header Scroll Effect - with passive listener for better scroll performance
 const header = document.getElementById('header');
 let lastScroll = 0;
+let ticking = false;
 
 window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-    
-    if (currentScroll > 100) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
+            lastScroll = currentScroll;
+            ticking = false;
+        });
+        ticking = true;
     }
-    
-    lastScroll = currentScroll;
-});
+}, { passive: true });
 
 // FAQ Accordion
 const faqItems = document.querySelectorAll('.faq-item');
@@ -108,14 +115,19 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Apply animation to cards
-const cards = document.querySelectorAll('.fact-card, .step-card, .game-category, .advantage-card, .review-card');
-cards.forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(30px)';
-    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(card);
-});
+// Apply animation to cards - only on desktop for better mobile performance
+const isMobile = window.matchMedia('(max-width: 768px)').matches;
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (!isMobile && !prefersReducedMotion) {
+    const cards = document.querySelectorAll('.fact-card, .step-card, .game-category, .advantage-card, .review-card');
+    cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+}
 
 // Performance: Lazy Loading Images (if not using native lazy loading)
 if ('loading' in HTMLImageElement.prototype) {
@@ -142,5 +154,4 @@ if ('loading' in HTMLImageElement.prototype) {
     lazyImages.forEach(img => imageObserver.observe(img));
 }
 
-// Console Log - Remove in production
-console.log('Lizaro Casino - Website Loaded Successfully');
+// Production ready - console.log removed

@@ -2732,3 +2732,151 @@ section {
         font-size: 28px;
     }
 }
+
+/* Mobile Performance Optimizations */
+@media (max-width: 768px) {
+    /* Disable expensive background effect on mobile */
+    body::before {
+        display: none;
+    }
+
+    /* Simplify header backdrop filter */
+    .header {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(15, 15, 15, .98);
+    }
+
+    /* Disable box-shadow glow effects on mobile */
+    .btn-primary {
+        box-shadow: none;
+    }
+
+    .btn-glow {
+        animation: none;
+        box-shadow: 0 4px 12px rgba(255, 69, 0, .4);
+    }
+
+    /* Simplify card shadows */
+    .fact-card:hover,
+    .step-card:hover,
+    .game-category:hover,
+    .advantage-card:hover,
+    .review-card:hover,
+    .condition-card:hover,
+    .game-card:hover,
+    .live-game-card:hover,
+    .gamif-card-large:hover,
+    .responsible-feature:hover,
+    .process-step:hover {
+        transform: none;
+        box-shadow: 0 4px 20px rgba(255, 69, 0, .2);
+    }
+
+    /* Disable hover transforms on touch devices */
+    .hero__feature-card:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .hero__feature-card:hover img {
+        transform: none;
+    }
+
+    /* Simplify table wrapper */
+    .table-wrapper::before {
+        display: none;
+    }
+
+    /* Simplify game card overlay */
+    .game-card__overlay {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    /* Disable animations on mobile for better performance */
+    .badge-icon {
+        animation: none;
+    }
+
+    .hero__badge {
+        animation: none;
+    }
+
+    .live-badge {
+        animation: none;
+    }
+
+    /* Simplify step number glow */
+    .step-number,
+    .process-number {
+        box-shadow: 0 2px 8px rgba(255, 69, 0, .4);
+    }
+
+    /* Disable filter effects */
+    .gradient-text {
+        filter: none;
+    }
+
+    .header__logo .logo-img {
+        filter: none;
+    }
+
+    .fact-card__icon svg {
+        filter: none;
+    }
+}
+
+/* Respect user preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    .btn-glow {
+        animation: none;
+    }
+
+    .badge-icon {
+        animation: none;
+    }
+
+    .hero__badge {
+        animation: none;
+    }
+
+    .live-badge {
+        animation: none;
+    }
+}
+
+/* Content visibility for below-fold sections - improves initial render */
+.key-facts,
+.params-table,
+.bonuses,
+.registration,
+.games,
+.games-showcase,
+.live-casino-section,
+.sports-betting,
+.gamification,
+.payments,
+.mobile-experience,
+.reviews,
+.service-safety,
+.customer-support,
+.advantages,
+.responsible-gambling,
+.faq,
+.cta-final {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+}
