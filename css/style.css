@@ -421,24 +421,74 @@ a {
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    padding: 14px 18px;
-    background: rgba(37, 20, 24, .8);
+    padding: 14px 18px 22px;
+    background: rgba(37, 20, 24, .85);
     border: 2px solid rgba(212, 175, 55, .3);
     border-radius: 8px;
     transition: all .3s ease;
     backdrop-filter: blur(8px);
-    min-width: 200px
+    min-width: 200px;
+    position: relative;
+    overflow: hidden;
+    min-height: 160px;
+    justify-content: flex-end
 }
 
 .hero__feature-card:hover {
     transform: translateY(-4px);
     border-color: var(--accent);
-    box-shadow: 0 8px 24px rgba(212, 175, 55, .3)
+    box-shadow: 0 8px 28px rgba(212, 175, 55, .35), inset 0 1px 0 rgba(212, 175, 55, .15)
+}
+
+.hero__feature-card__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .4;
+    z-index: 0;
+    transition: transform .5s ease, opacity .3s ease
+}
+
+.hero__feature-card:hover .hero__feature-card__img {
+    transform: scale(1.08);
+    opacity: .52
+}
+
+.hero__feature-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(13, 5, 6, .96) 0%, rgba(37, 20, 24, .78) 50%, rgba(37, 20, 24, .2) 85%, rgba(212, 175, 55, .06) 100%);
+    z-index: 1
+}
+
+.hero__feature-card::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 18px;
+    height: 18px;
+    border-top: 2px solid rgba(212, 175, 55, .4);
+    border-right: 2px solid rgba(212, 175, 55, .4);
+    z-index: 3;
+    transition: all .3s ease
+}
+
+.hero__feature-card:hover::after {
+    width: 22px;
+    height: 22px;
+    border-color: var(--accent);
+    box-shadow: 2px -2px 8px rgba(212, 175, 55, .25)
 }
 
 .feature-icon {
     font-size: 36px;
-    margin-bottom: 4px
+    margin-bottom: 4px;
+    position: relative;
+    z-index: 2
 }
 
 .hero__feature-card span {
@@ -448,7 +498,9 @@ a {
     text-align: center;
     font-family: 'Cinzel', serif;
     text-transform: uppercase;
-    letter-spacing: .5px
+    letter-spacing: .5px;
+    position: relative;
+    z-index: 2
 }
 
 .hero__buttons {
@@ -593,6 +645,25 @@ section {
 
 .glance-card:hover::before {
     transform: scaleX(1)
+}
+
+.glance-card::after {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 14px;
+    height: 14px;
+    border-bottom: 1px solid rgba(212, 175, 55, .2);
+    border-right: 1px solid rgba(212, 175, 55, .2);
+    z-index: 1;
+    transition: all .3s ease
+}
+
+.glance-card:hover::after {
+    width: 18px;
+    height: 18px;
+    border-color: rgba(212, 175, 55, .55)
 }
 
 .glance-card__icon {
@@ -971,6 +1042,23 @@ section {
 
 .step-card:hover::before {
     opacity: .2
+}
+
+.step-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 48px;
+    height: 2px;
+    background: var(--gradient-gold);
+    border-radius: 1px;
+    transition: transform .4s ease
+}
+
+.step-card:hover::after {
+    transform: translateX(-50%) scaleX(1)
 }
 
 .step-number {
@@ -2367,8 +2455,9 @@ section {
     }
 
     .hero__feature-card {
-        padding: 10px 12px;
-        min-width: 80px
+        padding: 10px 12px 18px;
+        min-width: 80px;
+        min-height: 120px
     }
 
     .feature-icon {
